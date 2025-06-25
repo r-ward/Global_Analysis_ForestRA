@@ -1,5 +1,6 @@
 # Global_Analysis_ForestRA
-This repository holds scripts and data used in a global analysis of forest reproductive allocation, described in the manuscript Ward et al. (2025)
+This repository holds scripts and data used in a global analysis of forest reproductive allocation, described in the manuscript Ward et al. (2025).
+Data will be released upon publication.
 
 GlobalForestRA_analysis.r
 - this script calls source scripts from the /Functions folder to run analyses and generate all figures in the main text
