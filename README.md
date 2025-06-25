@@ -5,7 +5,7 @@ GlobalForestRA_analysis.r
 - this script calls source scripts from the /Functions folder to run analyses and generate all figures in the main text
 
 GlobalForestRA_SI.r
-- note that the main analysis must be run first to create the data objects used in the SI scripts
+- the main analysis must be run first to create the data objects used in the SI scripts
 - this script calls source scripts from the /Functions folder to generate all tables and figures in the SI
 
 /Data
