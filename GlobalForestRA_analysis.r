@@ -85,10 +85,10 @@ df1 <- df
 # R/(R+L)
 b <- boxcox(lm(df1$RRL ~ 1)) # box cox transformation 
 lambda <- b$x[which.max(b$y)] # 0.3838384
-# R (reproductive flux) 
+# R (reproductive litterfall flux) 
 br <- boxcox(lm(df1$Repro_flux_Mghayr ~ 1)) # box cox lambda for R
 lambda_r <- br$x[which.max(br$y)] # 0.2626263
-# L (leaf flux)
+# L (leaf litterfall flux)
 bl <- boxcox(lm(df1$Leaf_flux_Mghayr ~ 1)) # box cox lambda for L
 lambda_l <- bl$x[which.max(bl$y)] # 0.4646465
 
@@ -162,7 +162,7 @@ Fig2a_biomefig <- create_biome_plot_letters(df) +
   labs(title = "a)")
 
 # Fig 2b
-# Set up biomes + leaf morphology groups to compare
+# Compare R/(R+L) in biomes + leaf morphology groups
 biome_pfts <- c("Tropical_broadleaf", "Temperate_broadleaf", "Temperate_needleleaf", "Boreal_needleleaf")
 
 # df_biome will contain only the biome_pft groups we want to compare in the figure
@@ -181,11 +181,12 @@ nrow(df_biome) # 716 sites
 Fig2b_pftfig <- create_pft_plot_letters(df_biome) +
   labs(title = "b)") 
 
-# Histogram of biome 
-Fig2c_biome_age_plot <- create_biome_age_plot(df, col_biome = "Biome", col_age = "Forest_age_group", colors_biome = colors_biome) +
+# Fig 2c
+# Compare R/(R+L) in age groups within biomes 
+Fig2c_biome_age_plot <- create_biome_age_plot_with_stats(df, col_biome = "Biome", col_age = "Forest_age_group", colors_biome = colors_biome) +
   labs(title = "c)")
 
-# Combine the plots
+# Combine the Fig 2 plots
 Fig2_combined <- (Fig2a_biomefig + Fig2b_pftfig + plot_layout(ncol = 2, widths = c(1, 1.2))) /
   Fig2c_biome_age_plot +
   plot_layout(nrow = 2, heights = c(1, 1))  & 
@@ -269,13 +270,13 @@ blue_color <- "#E16462FF" #colors_age[1] #viridis(6, option= "magma", begin = 0,
 
 # Get the model data and plot the effect sizes for best fit models
 mod_est_RRL <- get_mod_est_data(mod_RRL)
-EF_RRL <- plot_EF_fig(mod_est_RRL, "R/(R+L)", c(-1, 1), mod_order, red_color, blue_color)
+EF_RRL <- plot_EF_fig(mod_est_RRL, "RA proxy (R/(R+L))", c(-1, 1), mod_order, red_color, blue_color)
 
 mod_est_R <- get_mod_est_data(mod_R)
-EF_R <- plot_EF_fig(mod_est_R, "R (reproductive flux)", c(-1.5, 1.5), mod_order, red_color, blue_color)
+EF_R <- plot_EF_fig(mod_est_R, "Reproductive litterfall (R)", c(-1.5, 1.5), mod_order, red_color, blue_color)
 
 mod_est_L <- get_mod_est_data(mod_L)
-EF_L <- plot_EF_fig(mod_est_L, "L (leaf flux)", c(-1.25, 1.25), mod_order, red_color, blue_color)
+EF_L <- plot_EF_fig(mod_est_L, "Leaf litterfall (L)", c(-1.25, 1.25), mod_order, red_color, blue_color)
 
 
 # Put these together in a grid: 
@@ -322,18 +323,18 @@ source("Functions/create_heatmap_pred_Fig4.r")
  L_tile <- get_new_data(mod_full_L, bc_l_limits, unique(df$lambda_l), "L")
 
 # Use data to make heat plot tile
-tile_plot_RRL <- create_tile_plot(RRL_tile, "RRL", "R/(R+L)")
-tile_plot_R <- create_tile_plot(R_tile, "R", "R")
-tile_plot_L <- create_tile_plot(L_tile, "L", "L")
+tile_plot_RRL <- create_tile_plot(RRL_tile, "RRL", "RA proxy (R/(R+L))")
+tile_plot_R <- create_tile_plot(R_tile, "Reproductive litterfall (R)", "R")
+tile_plot_L <- create_tile_plot(L_tile, "Leaf litterfall (L)", "L")
 
 # Define axes limits for contour plot - the range of MAT and MAP
 mod_mat_axes <- c(-4.2, 27)
 mod_map_axes <- c(199, 3550)
 
 # Create the convex hull heat map 
-RRL_heatmap <- get_convex_hull_heatmap(RRL_tile, hull_points, "RRL", "R/(R+L)", "R/(R+L)", df_points, mod_mat_axes, mod_map_axes)
-R_heatmap  <- get_convex_hull_heatmap(R_tile, hull_points, "R", "R\n(Mg/hayr)", "R (reproductive flux)", df_points,  mod_mat_axes, mod_map_axes)
-L_heatmap <- get_convex_hull_heatmap(L_tile, hull_points, "L", "L\n(Mg/hayr)", "L (leaf flux)", df_points,  mod_mat_axes, mod_map_axes)
+RRL_heatmap <- get_convex_hull_heatmap(RRL_tile, hull_points, "RRL", "R/(R+L)", "RA proxy (R/(R+L))", df_points, mod_mat_axes, mod_map_axes)
+R_heatmap  <- get_convex_hull_heatmap(R_tile, hull_points, "R", "R\n(Mg/hayr)", "Reproductive litterfall (R)", df_points,  mod_mat_axes, mod_map_axes)
+L_heatmap <- get_convex_hull_heatmap(L_tile, hull_points, "L", "L\n(Mg/hayr)", "Leaf litterfall (L)", df_points,  mod_mat_axes, mod_map_axes)
 
 # Arrange in a grid 
 Figure_4 <- grid.arrange(RRL_heatmap, R_heatmap, L_heatmap, ncol = 3)
