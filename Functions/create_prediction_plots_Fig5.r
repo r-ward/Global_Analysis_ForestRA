@@ -174,13 +174,13 @@ L_FA_data <- get_newFAdata_fig5(mod_L, bc_l_limits, unique(df$lambda_l), "L")
 colors_MAP <- viridis(3, begin = 0.35, end = .85, direction = -1) # dark purple endpoint 0, less yellow upper end 0.9
 colors_age <- viridis(3, begin = 0.0, end = .8, option= "plasma", direction = -1) 
 
-RRL_plot <- plot_MATresponse(RRL_MAT_preds, "RRL", "R/(R+L)", colors_MAP)
-R_plot <- plot_MATresponse(R_MAT_preds, "R", "R (reproductive flux, Mg ha-1 yr-1)", colors_MAP)
-L_plot <- plot_MATresponse(L_MAT_preds, "L", "L (leaf flux, Mg ha-1 yr-1)", colors_MAP)
+RRL_plot <- plot_MATresponse(RRL_MAT_preds, "RRL", "RA proxy (R/(R+L))", colors_MAP)
+R_plot <- plot_MATresponse(R_MAT_preds, "R", "R (Mg ha-1 yr-1)", colors_MAP)
+L_plot <- plot_MATresponse(L_MAT_preds, "L", "L (Mg ha-1 yr-1)", colors_MAP)
 
-RRL_FA_plot <- plot_FA_responses(RRL_FA_data, "RRL", "R/(R+L)", colors_age)
-R_FA_plot <- plot_FA_responses(R_FA_data, "R", "R (reproductive flux, Mg ha-1 yr-1)", colors_age)
-L_FA_plot <- plot_FA_responses(L_FA_data, "L", "L (leaf flux, Mg ha-1 yr-1)", colors_age)
+RRL_FA_plot <- plot_FA_responses(RRL_FA_data, "RRL", "RA proxy (R/(R+L)", colors_age)
+R_FA_plot <- plot_FA_responses(R_FA_data, "R", "R (Mg ha-1 yr-1)", colors_age)
+L_FA_plot <- plot_FA_responses(L_FA_data, "L", "L (Mg ha-1 yr-1)", colors_age)
 
 # Generate separate legends for MAP and Forest Age
 # Function to extract legend from a ggplot object
@@ -205,12 +205,12 @@ fa_legend <- get_legend(RRL_FA_plot)
 
 
 # Create plots without legends
-p1 <- plot_MATresponse(RRL_MAT_preds, "RRL", "R/(R+L)", colors_MAP) + theme(legend.position = "none")
-p2 <- plot_MATresponse(R_MAT_preds, "R", "R (reproductive flux, Mg/hayr)", colors_MAP) + theme(legend.position = "none")
-p3 <- plot_MATresponse(L_MAT_preds, "L", "L (leaf flux, Mg/hayr)", colors_MAP) + theme(legend.position = "none")
-p4 <- plot_FA_responses(RRL_FA_data, "RRL", "R/(R+L)", colors_age ) + theme(legend.position = "none")
-p5 <- plot_FA_responses(R_FA_data, "R", "R (reproductive flux, Mg/hayr)", colors_age) + theme(legend.position = "none")
-p6 <- plot_FA_responses(L_FA_data, "L", "L (leaf flux, Mg/hayr)", colors_age) + theme(legend.position = "none")
+p1 <- plot_MATresponse(RRL_MAT_preds, "RRL", "RA proxy (R/(R+L))", colors_MAP) + theme(legend.position = "none")
+p2 <- plot_MATresponse(R_MAT_preds, "R", "R (Mg/hayr)", colors_MAP) + theme(legend.position = "none")
+p3 <- plot_MATresponse(L_MAT_preds, "L", "L (Mg/hayr)", colors_MAP) + theme(legend.position = "none")
+p4 <- plot_FA_responses(RRL_FA_data, "RRL", "RA proxy (R/(R+L))", colors_age ) + theme(legend.position = "none")
+p5 <- plot_FA_responses(R_FA_data, "R", "R (Mg/hayr)", colors_age) + theme(legend.position = "none")
+p6 <- plot_FA_responses(L_FA_data, "L", "L (Mg/hayr)", colors_age) + theme(legend.position = "none")
 
 # # Update individual plots to add labels
 # p1 <- p1 + ggtitle("a)") + theme(plot.title = element_text(hjust = 0, size = 12, margin = margin(b = -15)))
