@@ -1,7 +1,7 @@
 #create_statistics_tables.R
 
-library(flextable) # format table for Word 
-library(officer) # handle Word doc operations
+library(flextable) # Format table for Word 
+library(officer) # Handle Word doc operations
 library(car) # ANOVA
 
 create_word_tables <- function(data, 
