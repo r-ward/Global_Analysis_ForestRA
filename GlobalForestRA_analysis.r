@@ -4,7 +4,16 @@
 rm(list = ls())
 
 # Set working directory 
-setwd("/Users/rachelward/Desktop/Projects/VS_workspace/GlobalForestRA_final")
+setwd("/Users/rachelward/Desktop/Projects/Global_Analysis_ForestRA")
+
+# Set path to data from Hanbury-Brown et al. (2022)
+path_to_HB2022_data <- ("/Users/rachelward/Desktop/Hanbury-Brown_2022/nph18131-sup-0003-tables2_TableS2_RAFluxdata.csv")
+# Fig. 1a is adapted from Hanbury-Brown et al. (2022). 
+# Data are available in the Supporting Information of this paper:
+# https://nph.onlinelibrary.wiley.com/doi/full/10.1111/nph.18131
+# Table S2 (data) and S3 (metadata) are saved in an xlsx file
+# https://nph.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1111%2Fnph.18131&file=nph18131-sup-0003-TableS2.xlsx
+# We use this data, saved from xlsx file tab 'Table_S2_RAFluxData' as a .csv file
 
 # Load libraries
 library(tidyverse) # data wrangling, plotting
@@ -12,9 +21,11 @@ library(datawizard) # data standardization
 library(MASS) # boxcox transformation
 library(nlme) # model fitting
 library(sjPlot) # model summary tables
+library(patchwork) # arrange plots
 
 ############################## Load data ###############################
 
+# Data are located in the working directory data folder
 df <- read.csv("Data/GlobalForestRA_data.csv")
 
 # Add geo_site, unique latitude and longitude
@@ -106,15 +117,17 @@ df$bc_L <- ((df$Leaf_flux_Mghayr ^ lambda_l) - 1) / lambda_l
 ##################### Fig1 - Distribution of sites in Whittaker biome and geographic space #####################
 
 #Fig 1a is adapted from Hanbury-Brown et al., (2022) 
-source(Functions/create_NPP_plot_Fig1.r)
+
+
+source("Functions/create_NPP_plots_Fig1.r")
 Fig1a <- get_RNPP_corrplot(RNPP_sites)
 
 # Fig 1b 
-source(Functions/create_Whittaker_biome_plot.r)
+source("Functions/create_Whittaker_biome_plot.r")
 Fig1b <- get_whittakerbiome_plot(Whittaker_df)
 
 # Fig 1c
-source(Functions/create_forest_extent_map.r)
+source("Functions/create_forest_extent_map.r")
 Fig1c <- forest_sitemap
 
 # Arrange plots
@@ -193,7 +206,7 @@ Fig2_combined <- (Fig2a_biomefig + Fig2b_pftfig + plot_layout(ncol = 2, widths =
 theme(plot.margin = margin(t = 0, r = 5, b = 0, l = 5, unit = "pt"))
 
 # Save Figure 2
-# ggsave("Output/Figure2_boxplots.jpeg", Fig2_combined, width = 8, height = 8.5)  # Adjust dimensions as needed
+ggsave("Output/Figure2_boxplots.jpeg", Fig2_combined, width = 8, height = 8.5)  # Adjust dimensions as needed
 
 
 ############################### Model fitting ###############################
@@ -258,9 +271,9 @@ tab_model(mod_RRL, mod_R, mod_L,
 # Table 1: Final model summary table
 tab_model(mod_RRL, mod_R, mod_L,
     dv.labels = c("RA proxy (R/(R+L))", "Reproductive litterfall (R)", "Leaf litterfall (L)"),
-    show.aic = T) #,
-# # Save
-#   # file = "Output/Table1_FinalMod_table.doc")
+    show.aic = T,
+    # Save
+    file = "Output/Table1_FinalMod_table.doc")
 
 # Note that additional summary tables are saved in the GlobalForestRA_SI script
 
@@ -317,7 +330,7 @@ EF_grid <- grid.arrange(
   widths = c(1.6, 1, 1)
 )
 
-# ggsave("Output/Figure3_modeffects.jpeg", EF_grid, width = 16, height = 10, units = "in", dpi = 300, bg = "white")
+ggsave("Output/Figure3_modeffects.jpeg", EF_grid, width = 16, height = 10, units = "in", dpi = 300, bg = "white")
 
 
 ############################### Fig4 - compare predictions over climate space ###############################
@@ -347,7 +360,7 @@ L_heatmap <- get_convex_hull_heatmap(L_tile, hull_points, "L", "L\n(Mg/hayr)", "
 Figure_4 <- grid.arrange(RRL_heatmap, R_heatmap, L_heatmap, ncol = 3)
 
 # Save plot
-# ggsave("Output/Figure4_heatmap.jpeg", Figure_4_test, width = 16, height = 6.5, units = "in", dpi = 300, bg = "white")
+ggsave("Output/Figure4_heatmap.jpeg", Figure_4, width = 16, height = 6.5, units = "in", dpi = 300, bg = "white")
 
 
 ############################### Fig5 - compare predictions over MAT ###############################
@@ -403,52 +416,93 @@ Fig5_combined_labeled <- grid.arrange(
 )
 
 # Save plot
-# ggsave(filename = "GlobalRA_scripts/Paper_figs/Figure5_prediction_plots.jpeg",Fig5_combined_labeled, width = 10, height = 6.5, units = "in", dpi = 300)
+ggsave(filename = "Output/Figure5_prediction_plots.jpeg",Fig5_combined_labeled, width = 10, height = 6.5, units = "in", dpi = 300)
 
 
 ############################### Session info ###############################
 # sessionInfo()
-
 # R version 4.4.0 (2024-04-24)
 # Platform: x86_64-apple-darwin20
 # Running under: macOS Ventura 13.3
-
+# 
 # Matrix products: default
-# BLAS:   /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/lib/libRblas.0.dylib 
+# BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
 # LAPACK: /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
-
+# 
 # locale:
-# [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
-
+#   [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+# 
 # time zone: America/Los_Angeles
 # tzcode source: internal
-
+# 
 # attached base packages:
-# [1] stats     graphics  grDevices utils     datasets  methods   base     
-
+#   [1] stats     graphics  grDevices utils     datasets  methods  
+# [7] base     
+# 
 # other attached packages:
-#  [1] sp_2.1-4            gridExtra_2.3       ggbeeswarm_0.7.2   
-#  [4] patchwork_1.2.0     multcompView_0.1-10 viridis_0.6.5      
-#  [7] viridisLite_0.4.2   gghalves_0.1.4      sjPlot_2.8.16      
-# [10] nlme_3.1-164        MASS_7.3-60.2       lubridate_1.9.3    
-# [13] forcats_1.0.0       stringr_1.5.1       dplyr_1.1.4        
-# [16] purrr_1.0.2         readr_2.1.5         tidyr_1.3.1        
-# [19] tibble_3.2.1        ggplot2_3.5.1       tidyverse_2.0.0    
-
+#   [1] gridExtra_2.3         ggbeeswarm_0.7.2     
+# [3] multcompView_0.1-10   viridis_0.6.5        
+# [5] viridisLite_0.4.2     gghalves_0.1.4       
+# [7] patchwork_1.2.0       rnaturalearth_1.0.1  
+# [9] raster_3.6-26         sp_2.1-4             
+# [11] sf_1.0-16             plotbiomes_0.0.0.9001
+# [13] ggpubr_0.6.0          sjPlot_2.8.16        
+# [15] nlme_3.1-164          MASS_7.3-60.2        
+# [17] datawizard_0.11.0     lubridate_1.9.3      
+# [19] forcats_1.0.0         stringr_1.5.1        
+# [21] dplyr_1.1.4           purrr_1.0.2          
+# [23] readr_2.1.5           tidyr_1.3.1          
+# [25] tibble_3.2.1          ggplot2_3.5.1        
+# [27] tidyverse_2.0.0      
+# 
 # loaded via a namespace (and not attached):
-#  [1] gtable_0.3.5       beeswarm_0.4.0     xfun_0.45          bayestestR_0.13.2 
-#  [5] insight_0.20.1     lattice_0.22-6     tzdb_0.4.0         vctrs_0.6.5       
-#  [9] sjstats_0.19.0     tools_4.4.0        generics_0.1.3     datawizard_0.11.0 
-# [13] sandwich_3.1-0     fansi_1.0.6        pkgconfig_2.0.3    Matrix_1.7-0      
-# [17] RColorBrewer_1.1-3 ggeffects_1.7.0    lifecycle_1.0.4    compiler_4.4.0    
-# [21] farver_2.1.2       sjmisc_2.8.10      munsell_0.5.1      codetools_0.2-20  
-# [25] vipor_0.4.7        nloptr_2.0.3       pillar_1.9.0       boot_1.3-30       
-# [29] multcomp_1.4-26    tidyselect_1.2.1   sjlabelled_1.2.0   performance_0.12.0
-# [33] mvtnorm_1.2-5      stringi_1.8.4      labeling_0.4.3     splines_4.4.0     
-# [37] grid_4.4.0         colorspace_2.1-0   cli_3.6.3          magrittr_2.0.3    
-# [41] survival_3.5-8     utf8_1.2.4         TH.data_1.1-2      withr_3.0.0       
-# [45] scales_1.3.0       timechange_0.3.0   estimability_1.5.1 emmeans_1.10.6    
-# [49] lme4_1.1-35.3      zoo_1.8-12         hms_1.1.3          coda_0.19-4.1     
-# [53] knitr_1.48         parameters_0.22.0  rlang_1.1.4        isoband_0.2.7     
-# [57] Rcpp_1.0.12        xtable_1.8-4       glue_1.7.0         effectsize_0.8.8  
-# [61] minqa_1.2.7        jsonlite_1.8.8     R6_2.5.1          
+#   [1] RColorBrewer_1.1-3      rstudioapi_0.16.0      
+# [3] jsonlite_1.8.8          magrittr_2.0.3         
+# [5] TH.data_1.1-2           estimability_1.5.1     
+# [7] nloptr_2.0.3            farver_2.1.2           
+# [9] ragg_1.3.2              vctrs_0.6.5            
+# [11] minqa_1.2.7             effectsize_0.8.8       
+# [13] base64enc_0.1-3         terra_1.7-78           
+# [15] rstatix_0.7.2           htmltools_0.5.8.1      
+# [17] polynom_1.4-1           broom_1.0.5            
+# [19] sjmisc_2.8.10           KernSmooth_2.23-22     
+# [21] htmlwidgets_1.6.4       sandwich_3.1-0         
+# [23] emmeans_1.10.6          zoo_1.8-12             
+# [25] lifecycle_1.0.4         pkgconfig_2.0.3        
+# [27] sjlabelled_1.2.0        Matrix_1.7-0           
+# [29] R6_2.5.1                fastmap_1.2.0          
+# [31] digest_0.6.36           colorspace_2.1-0       
+# [33] mapview_2.11.2          leafem_0.2.3           
+# [35] textshaping_0.3.7       crosstalk_1.2.1        
+# [37] labeling_0.4.3          fansi_1.0.6            
+# [39] timechange_0.3.0        httr_1.4.7             
+# [41] abind_1.4-5             mgcv_1.9-1             
+# [43] compiler_4.4.0          proxy_0.4-27           
+# [45] withr_3.0.0             backports_1.4.1        
+# [47] carData_3.0-5           DBI_1.2.3              
+# [49] performance_0.12.0      ggsignif_0.6.4         
+# [51] sjstats_0.19.0          leaflet_2.2.2          
+# [53] classInt_0.4-10         tools_4.4.0            
+# [55] units_0.8-5             vipor_0.4.7            
+# [57] beeswarm_0.4.0          glue_1.7.0             
+# [59] rnaturalearthdata_1.0.0 satellite_1.0.5        
+# [61] grid_4.4.0              generics_0.1.3         
+# [63] isoband_0.2.7           gtable_0.3.5           
+# [65] tzdb_0.4.0              class_7.3-22           
+# [67] data.table_1.15.4       hms_1.1.3              
+# [69] car_3.1-2               utf8_1.2.4             
+# [71] pillar_1.9.0            splines_4.4.0          
+# [73] lattice_0.22-6          survival_3.5-8         
+# [75] tidyselect_1.2.1        knitr_1.48             
+# [77] stats4_4.4.0            xfun_0.45              
+# [79] stringi_1.8.4           boot_1.3-30            
+# [81] codetools_0.2-20        cli_3.6.3              
+# [83] xtable_1.8-4            parameters_0.22.0      
+# [85] systemfonts_1.1.0       munsell_0.5.1          
+# [87] Rcpp_1.0.12             ggeffects_1.7.0        
+# [89] coda_0.19-4.1           png_0.1-8              
+# [91] bayestestR_0.13.2       lme4_1.1-35.3          
+# [93] mvtnorm_1.2-5           scales_1.3.0           
+# [95] e1071_1.7-14            insight_0.20.1         
+# [97] crayon_1.5.2            rlang_1.1.4            
+# [99] multcomp_1.4-26     
