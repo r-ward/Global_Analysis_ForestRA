@@ -12,10 +12,13 @@ df_sitesoil <- df %>%
          !is.na(Site_soil_CEC),
          !is.na(Site_soil_sand),
          !is.na(Site_soil_clay),
-         !is.na(Site_soil_silt))
+         !is.na(Site_soil_silt)) %>% 
+  mutate(Site_soil_texture_index = log(Site_soil_sand/Site_soil_clay))
 
 # Sanity check
 nrow(df_sitesoil)
+
+colnames(df_sitesoil)
 
 ########### Box-Cox transform
 # R/(R+L)
@@ -74,11 +77,11 @@ d_mod_soil$Forest_age <- relevel(d_mod_soil$Forest_age, ref = "mid")
 
 # full_RRL_site <- lme(RRL ~ MAT + MAT2 + MAP + MAP2 + MAT*MAP + Site_soil_pH + Site_soil_N + Site_soil_texture_index + Site_soil_CEC + Site_soil_texture_index*MAP + Forest_age , random = ~1|site, weights = varFixed(~sqrt_Duration), data = d_mod_soil)
 # full_R_site <- lme(R ~ MAT + MAT2 + MAP + MAP2 + MAT*MAP + Site_soil_pH + Site_soil_N + Site_soil_texture_index + Site_soil_CEC + Site_soil_texture_index*MAP + Forest_age, random = ~1|site, weights = varFixed(~sqrt_Duration), data = d_mod_soil)
-# L_site <- lme(L ~ MAT + MAT2 + MAP + MAP2 + MAT*MAP + Site_soil_pH + Site_soil_N + Site_soil_texture_index + Site_soil_CEC + Site_soil_texture_index*MAP + Forest_age, random = ~1|site, weights = varFixed(~sqrt_Duration), data = d_mod_soil)
-# L_site_noMAT2 <- lme(L ~ MAT + MAP + MAP2 + MAT*MAP + Site_soil_pH + Site_soil_N + Site_soil_texture_index + Site_soil_CEC + Site_soil_texture_index*MAP + Forest_age, random = ~1|site, weights = varFixed(~sqrt_Duration), data = d_mod_soil)
+# full_L_site <- lme(L ~ MAT + MAT2 + MAP + MAP2 + MAT*MAP + Site_soil_pH + Site_soil_N + Site_soil_texture_index + Site_soil_CEC + Site_soil_texture_index*MAP + Forest_age, random = ~1|site, weights = varFixed(~sqrt_Duration), data = d_mod_soil)
+# full_L_site_noMAT2 <- lme(L ~ MAT + MAP + MAP2 + MAT*MAP + Site_soil_pH + Site_soil_N + Site_soil_texture_index + Site_soil_CEC + Site_soil_texture_index*MAP + Forest_age, random = ~1|site, weights = varFixed(~sqrt_Duration), data = d_mod_soil)
 
 # Save modelsummary table 
-# tab_model(full_RRL_site, full_R_site, L_site, 
+# tab_model(full_RRL_site, full_R_site, full_L_site_noMAT2, 
 #           dv.labels = c("R/(R+L); field sampled soil", "R; field sampled soil", "L; field sampled soil"),
 #           show.aic = TRUE,
 #           # save

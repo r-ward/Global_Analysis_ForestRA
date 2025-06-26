@@ -73,7 +73,7 @@ df_age <- df %>%
       scheme5 = classify_scheme(Forest_age, Biome, Successional_group, mid_ranges$`5`)
     ) %>%
     mutate(across(starts_with("scheme"), ~factor(., levels = c("young", "mid", "old"))))
-}
+
 
 # Function to fit model with each Forest_age classification scheme
 fit_forest_age_model <- function(df, forestage_col) {
@@ -96,11 +96,11 @@ d_mod_age$scheme4 <- df_age$scheme4
 d_mod_age$scheme5 <- df_age$scheme5
 
 # # Fit all models
-# mod_FA1 <- fit_forest_age_model(d_mod_age, "scheme1")
-# mod_FA2 <- fit_forest_age_model(d_mod_age, "scheme2")
-# mod_FA3 <- fit_forest_age_model(d_mod_age, "scheme3")
-# mod_FA4 <- fit_forest_age_model(d_mod_age, "scheme4")
-# mod_FA5 <- fit_forest_age_model(d_mod_age, "scheme5")
+ # mod_FA1 <- fit_forest_age_model(d_mod_age, "scheme1")
+ # mod_FA2 <- fit_forest_age_model(d_mod_age, "scheme2")
+ # mod_FA3 <- fit_forest_age_model(d_mod_age, "scheme3")
+ # mod_FA4 <- fit_forest_age_model(d_mod_age, "scheme4")
+ # mod_FA5 <- fit_forest_age_model(d_mod_age, "scheme5")
 
 # # save model summary table
 # tab_model(mod_FA1, mod_FA2, mod_FA3, mod_FA4, mod_FA5, 

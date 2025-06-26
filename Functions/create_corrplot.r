@@ -1,6 +1,6 @@
 
 
-create_correlation_plot <- function(d_mod, save_plot = FALSE) {
+create_correlation_plot <- function(d_mod, save_plot = TRUE) {
   # Load required libraries
   require(corrplot)
   require(dplyr)

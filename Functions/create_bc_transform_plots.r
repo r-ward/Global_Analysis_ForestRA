@@ -4,7 +4,7 @@ library(gridExtra)
 
 # This function will generate plots that show the raw and Box-Cox transformed data
 
-create_boxcox_comparison <- function(data, var_name, var_label, bc_var_name, lambda_name) {
+create_boxcox_comparison <- function(data, var_name, var_label, var_x_label, bc_var_name, lambda_name) {
   
   # Get the raw and transformed data
   raw_data <- data[[var_name]]
@@ -19,7 +19,7 @@ create_boxcox_comparison <- function(data, var_name, var_label, bc_var_name, lam
     geom_histogram(bins = 30, fill = "lightblue", color = "black") +
     theme_bw() +
     labs(title = paste("Raw", var_label, "\n"),
-         x = var_label,
+         x = var_x_label,
          y = "Count")
   
   # Create histogram of transformed data with both lambda value printed
@@ -29,7 +29,7 @@ create_boxcox_comparison <- function(data, var_name, var_label, bc_var_name, lam
     labs(title = paste0("Box-Cox Transformed ", var_label, 
                        "\n λ = ", lambda_text),
                        # sw_text),
-         x = paste("Transformed", var_label),
+         x = paste("Transformed", var_x_label),
          y = "Count")
   
   # Arrange plots side by side
