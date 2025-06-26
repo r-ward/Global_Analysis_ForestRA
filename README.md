@@ -4,10 +4,10 @@ Data will be released upon publication.
 
 
 GlobalForestRA_analysis.r
-  - this script calls source scripts from the /Functions folder to run analyses and generate all figures in the main text
+  - this script calls source scripts from the /Functions folder to run analyses and generate all tables and figures in the main text
 
 GlobalForestRA_SI.r
-  - note that the main analysis must be run first to create the data objects used in the SI scripts
+  - note that the main analysis must be run first to create the data objects used in the SI script
   - this script calls source scripts from the /Functions folder to generate all tables and figures in the SI
 
 /Data
