@@ -4,16 +4,15 @@
 rm(list = ls())
 
 # Set working directory 
-setwd("/Users/rachelward/Desktop/Projects/Global_Analysis_ForestRA")
+setwd("Global_Analysis_ForestRA")
 
 # Set path to data from Hanbury-Brown et al. (2022)
-path_to_HB2022_data <- ("/Users/rachelward/Desktop/Hanbury-Brown_2022/nph18131-sup-0003-tables2_TableS2_RAFluxdata.csv")
+path_to_HB2022_data <- ("Data/nph18131-sup-0003-tables2_TableS2_RAFluxdata.csv")
 # Fig. 1a is adapted from Hanbury-Brown et al. (2022). 
 # Data are available in the Supporting Information of this paper:
 # https://nph.onlinelibrary.wiley.com/doi/full/10.1111/nph.18131
-# Table S2 (data) and S3 (metadata) are saved in an xlsx file
-# https://nph.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1111%2Fnph.18131&file=nph18131-sup-0003-TableS2.xlsx
-# We use this data, saved from xlsx file tab 'Table_S2_RAFluxData' as a .csv file
+# We use data from the Table S2 .xlsx file tab 'Table_S2_RAFluxData', saved as a .csv file 
+
 
 # Load libraries
 library(tidyverse) # data wrangling, plotting
@@ -117,8 +116,6 @@ df$bc_L <- ((df$Leaf_flux_Mghayr ^ lambda_l) - 1) / lambda_l
 ##################### Fig1 - Distribution of sites in Whittaker biome and geographic space #####################
 
 #Fig 1a is adapted from Hanbury-Brown et al., (2022) 
-
-
 source("Functions/create_NPP_plots_Fig1.r")
 Fig1a <- get_RNPP_corrplot(RNPP_sites)
 
