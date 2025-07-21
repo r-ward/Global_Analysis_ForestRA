@@ -4,9 +4,10 @@
 library(ggpubr) # Add correlation and regression
 library(plotbiomes) # Whittaker biome plot
 
-# Figure 1a is adapted from Hanbury-Brown et al., (2022)
-# Load data from Supplementary information 
-RNPP_sites <- read.csv(paste0(path_to_HB2022_data)) %>% 
+# Figure 1a is adapted from Hanbury-Brown et al. (2022)
+# Data are from Supporting Information, the tab 'TableS2' 
+# of the Table S2 and S3 .xlsx file is saved as a .csv file in /Data
+RNPP_sites <- read.csv(paste0(path_to_HB2022_data), sep = ",") %>% 
   mutate(RRL = R/(R+L)) %>% 
   # Retain sites with NPP estimates
   filter(!is.na(NPP))
