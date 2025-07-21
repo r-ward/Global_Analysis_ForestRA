@@ -104,7 +104,6 @@
 ################### Figures 
 
 # Fig S1: Correlation between log(R/NPP) and log (R/(R+L))
-
     source("Functions/create_NPP_plots_Fig1.r")
     log_RNPP_plot <- get_logRNPP_plot(RNPP_sites)
     ggsave(filename = "Output/FigureS1_logRNPP_plot.jpeg", log_RNPP_plot, width = 6, height = 4)
