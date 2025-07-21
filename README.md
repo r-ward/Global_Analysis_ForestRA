@@ -14,6 +14,8 @@ GlobalForestRA_SI.r
 /Data
  - the file 'GlobalForestRA_data.csv' contains all litterfall data needed to run the analysis and SI scripts.
  - the file 'GlobalForestRA_metadata.pdf' contains descriptions of all variables in 'GlobalForestRA_data.csv'.
+ 
+ The following data files are used to create Figure 1 and can be found at: https://data.ess-dive.lbl.gov/view/ess-dive-f7b4f8a695ba8e3-20250721T185348259
  - the file 'nph18131-sup-0003-tables2_TableS2_RAFluxdata.csv' contains data from Table S2 of the Supporting Information for Hanbury-Brown et al. (2022) needed to create Figure 1a (the original .xlsx file can be downloaded from https://nph.onlinelibrary.wiley.com/doi/full/10.1111/nph.18131). 
  - the file 'land_cover_classification_5000.tif' contains the MODIS land cover classification raster (Friedl & Sulla-Menashe 2019) needed to create Figure 1c. See 'Functions/create_forest_extent_map.r' for additional detail.
  
