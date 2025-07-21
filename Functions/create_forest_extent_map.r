@@ -3,13 +3,13 @@
 # Load libraries
 library(raster) # load raster land cover data
 library(rnaturalearth) # load country boundaries
-library(sp)# load and work with spatial data
+library(sp) # load and work with spatial data
 
-# I use MODIS land cover classes, which can be downloaded from the LP DAAC
-# (https://lpdaac.usgs.gov) as "land_cover_classification_5000.tif"
+# To plot forest extent we use MODIS land cover classes, which can be downloaded 
+# from Google Earth Engine using the JavaScript snippet pasted at the end of this file.
 
 # Load raster of land cover data
-lc <- raster("~/Desktop/Field_data/GeoSpatial/land_cover_classification_5000.tif")
+lc <- raster("Data/land_cover_classification_5000.tif")
 
 # Format raster data and transform into spatial points
 names(lc) <- "lc"
@@ -99,3 +99,37 @@ forest_sitemap_alt <-
              stroke = .4) +
              xlab("") +
              ylab("") 
+
+# // Google Earth Engine Script:
+# // Load 2012 MODIS land cover and select the IGBP classification.
+# var cover = ee.Image('MODIS/051/MCD12Q1/2012_01_01')
+# .select('Land_Cover_Type_1');
+# 
+# // Define a palette for the 18 distinct land cover classes.
+# var igbpPalette = [
+#   'aec3d4', // water
+#   '152106', '225129', '369b47', '30eb5b', '387242', // forest
+#   '6a2325', 'c3aa69', 'b76031', 'd9903d', '91af40',  // shrub, grass
+#   '111149', // wetlands
+#   'cdb33b', // croplands
+#   'cc0013', // urban
+#   '33280d', // crop mosaic
+#   'd7cdcc', // snow and ice
+#   'f7e084', // barren
+#   '6f6f6f'  // tundra
+# ];
+# 
+# // Specify the min and max labels and the color palette matching the labels.
+# Map.addLayer(cover,
+#              {min: 0, max: 17, palette: igbpPalette},
+#              'IGBP classification');
+# 
+# // Export the land cover classification as a GeoTIFF file for the whole world.
+# Export.image.toDrive({
+#   image: cover, //reprojected,
+#   description: 'land_cover_classification',
+#   scale: 5000, // set the desired scale in meters
+#   crs: 'EPSG:4326' // EPSG code for WGS84
+# });
+
+
