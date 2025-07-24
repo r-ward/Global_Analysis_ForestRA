@@ -159,7 +159,9 @@ final_plot <- plot_layout +
 # Save the plot
 ggsave(filename = "Output/Figure1_NPPcorr_and_maps.jpeg", plot = final_plot, 
        width = 12, height = 9, units = "in", dpi = 300)
-
+# Save as pdf for final submission
+ggsave(filename = "Output/Figure1_NPPcorr_and_maps_800dpi.jpeg", plot = final_plot, 
+       width = 12, height = 9, units = "in", dpi = 800) # 1000 dpi file was > 10MB, 800 dpi is within upload limit
 
 
 ############################### Fig2 - biome differences ###############################
@@ -205,6 +207,8 @@ theme(plot.margin = margin(t = 0, r = 5, b = 0, l = 5, unit = "pt"))
 # Save Figure 2
 ggsave("Output/Figure2_boxplots.jpeg", Fig2_combined, width = 8, height = 8.5)  # Adjust dimensions as needed
 
+# Save high res version of Figure 2
+ggsave("Output/Figure2_boxplots_1000dpi.jpeg", Fig2_combined, width = 8, height = 8.5, dpi = 1000)  # Adjust dimensions as needed
 
 ############################### Model fitting ###############################
 d_mod <- df %>%
@@ -287,21 +291,22 @@ blue_color <- "#E16462FF" #colors_age[1] #viridis(6, option= "magma", begin = 0,
 
 # Get the model data and plot the effect sizes for best fit models
 mod_est_RRL <- get_mod_est_data(mod_RRL)
-EF_RRL <- plot_EF_fig(mod_est_RRL, "RA proxy (R/(R+L))", c(-1, 1), mod_order, red_color, blue_color)
+EF_RRL <- plot_EF_fig(mod_est_RRL, "a) RA proxy (R/(R+L))", c(-1, 1), mod_order, red_color, blue_color) + ylab("")
 
 mod_est_R <- get_mod_est_data(mod_R)
-EF_R <- plot_EF_fig(mod_est_R, "Reproductive litterfall (R)", c(-1.5, 1.5), mod_order, red_color, blue_color)
+EF_R <- plot_EF_fig(mod_est_R, "b) Reproductive litterfall (R)", c(-1.5, 1.5), mod_order, red_color, blue_color)
 
 mod_est_L <- get_mod_est_data(mod_L)
-EF_L <- plot_EF_fig(mod_est_L, "Leaf litterfall (L)", c(-1.25, 1.25), mod_order, red_color, blue_color)
-
+EF_L <- plot_EF_fig(mod_est_L, "c) Leaf litterfall (L)", c(-1.25, 1.25), mod_order, red_color, blue_color)
 
 # Put these together in a grid: 
 EF_grid <- grid.arrange(
   # First plot
   EF_RRL + 
+    ylab("") +
      theme(
-       plot.title = element_text(hjust = 0.5)
+       axis.title.y = element_blank(),
+      # plot.title = element_text(hjust = 0.5)
      ), 
   # Second plot
   EF_R + 
@@ -309,7 +314,7 @@ EF_grid <- grid.arrange(
       axis.title.y = element_blank(),
       axis.text.y = element_blank(),
       axis.ticks.y = element_blank(),
-      plot.title = element_text(hjust = 0.5)
+      #plot.title = element_text(hjust = 0.5)
     ) +
     scale_x_continuous(breaks = seq(-1, 1, 0.5)),
   
@@ -319,7 +324,7 @@ EF_grid <- grid.arrange(
       axis.title.y = element_blank(),
       axis.text.y = element_blank(),
       axis.ticks.y = element_blank(),
-      plot.title = element_text(hjust = 0.5)
+      #plot.title = element_text(hjust = 0.5)
     ) +
     scale_x_continuous(breaks = seq(-1, 1, 0.5)),
   
@@ -328,6 +333,8 @@ EF_grid <- grid.arrange(
 )
 
 ggsave("Output/Figure3_modeffects.jpeg", EF_grid, width = 16, height = 10, units = "in", dpi = 300, bg = "white")
+
+ggsave("Output/Figure3_modeffects_1000dpi.jpeg", EF_grid, width = 16, height = 10, units = "in", dpi = 1000, bg = "white")
 
 
 ############################### Fig4 - compare predictions over climate space ###############################
@@ -340,35 +347,52 @@ source("Functions/create_heatmap_pred_Fig4.r")
  L_tile <- get_new_data(mod_full_L, bc_l_limits, unique(df$lambda_l), "L")
 
 # Use data to make heat plot tile
-tile_plot_RRL <- create_tile_plot(RRL_tile, "RRL", "RA proxy (R/(R+L))")
-tile_plot_R <- create_tile_plot(R_tile, "Reproductive litterfall (R)", "R")
-tile_plot_L <- create_tile_plot(L_tile, "Leaf litterfall (L)", "L")
+# tile_plot_RRL <- create_tile_plot(RRL_tile, "RRL", "R/(R+L)")
+# tile_plot_R <- create_tile_plot(R_tile, "R", "R")
+# tile_plot_L <- create_tile_plot(L_tile, "L", "L")
 
 # Define axes limits for contour plot - the range of MAT and MAP
 mod_mat_axes <- c(-4.2, 27)
 mod_map_axes <- c(199, 3550)
 
 # Create the convex hull heat map 
-RRL_heatmap <- get_convex_hull_heatmap(RRL_tile, hull_points, "RRL", "R/(R+L)", "RA proxy (R/(R+L))", df_points, mod_mat_axes, mod_map_axes)
-R_heatmap  <- get_convex_hull_heatmap(R_tile, hull_points, "R", "R\n(Mg/hayr)", "Reproductive litterfall (R)", df_points,  mod_mat_axes, mod_map_axes)
-L_heatmap <- get_convex_hull_heatmap(L_tile, hull_points, "L", "L\n(Mg/hayr)", "Leaf litterfall (L)", df_points,  mod_mat_axes, mod_map_axes)
+RRL_heatmap <- get_convex_hull_heatmap(RRL_tile, hull_points, "RRL", "R/(R+L)", "a) RA proxy (R/(R+L))", df_points, mod_mat_axes, mod_map_axes)
+R_heatmap  <- get_convex_hull_heatmap(R_tile, hull_points, "R", "R\n(Mg/hayr)", "b) Reproductive litterfall (R)", df_points,  mod_mat_axes, mod_map_axes)
+L_heatmap <- get_convex_hull_heatmap(L_tile, hull_points, "L", "L\n(Mg/hayr)", "c) Leaf litterfall (L)", df_points,  mod_mat_axes, mod_map_axes)
 
 # Arrange in a grid 
 Figure_4 <- grid.arrange(RRL_heatmap, R_heatmap, L_heatmap, ncol = 3)
 
 # Save plot
 ggsave("Output/Figure4_heatmap.jpeg", Figure_4, width = 16, height = 6.5, units = "in", dpi = 300, bg = "white")
+# Save high res version 
+ggsave("Output/Figure4_heatmap_1000dpi.jpeg", Figure_4, width = 16, height = 6.5, units = "in", dpi = 1000, bg = "white")
 
 
 ############################### Fig5 - compare predictions over MAT ###############################
 
 source("Functions/create_prediction_plots_Fig5.r")
 
+# Create plots without legends
+p1 <- plot_MATresponse(RRL_MAT_preds, "RRL", "R/(R+L)", colors_MAP) + theme(legend.position = "none")
+p2 <- plot_MATresponse(R_MAT_preds, "R", "R (Mg/hayr)", colors_MAP) + theme(legend.position = "none")
+p3 <- plot_MATresponse(L_MAT_preds, "L", "L (Mg/hayr)", colors_MAP) + theme(legend.position = "none")
+p4 <- plot_FA_responses(RRL_FA_data, "RRL", "R/(R+L)", colors_age ) + theme(legend.position = "none")
+p5 <- plot_FA_responses(R_FA_data, "R", "R (Mg/hayr)", colors_age) + theme(legend.position = "none")
+p6 <- plot_FA_responses(L_FA_data, "L", "L (Mg/hayr)", colors_age) + theme(legend.position = "none")
+
 # First, create list of  plots generated by source function
 plot_list <- list(p1, p2, p3, p4, p5, p6)
 
 # Add labels to each plot
-labels <- c("a)", "b)", "c)", "d)", "e)", "f)")
+labels <- c("a) RA proxy (R/(R+L))", 
+            "b) Reproductive litterfall (R)", 
+            "c) Leaf litterfall (L)",
+            "d)", 
+            "e)",
+            "f)")
+
+#hjust_vals <- c(rep(0, 3), rep(0,3))
 
 # Add labels to each plot
 plot_list_labeled <- lapply(seq_along(plot_list), function(i) {
@@ -376,7 +400,8 @@ plot_list_labeled <- lapply(seq_along(plot_list), function(i) {
     theme(plot.margin = unit(c(1, 0.5, 0.5, 0.5), "cm")) +  # top, right, bottom, left margins
     annotate("text", x = -Inf, y = Inf, 
              label = labels[i], 
-             hjust = 1.3, vjust = -1.1,
+            hjust = 0,# hjust_vals[i],# 1.3, 
+             vjust = -1.1,
              size = 4) +
     coord_cartesian(clip = "off")  # Allow plotting outside the panel
 
@@ -414,6 +439,9 @@ Fig5_combined_labeled <- grid.arrange(
 
 # Save plot
 ggsave(filename = "Output/Figure5_prediction_plots.jpeg",Fig5_combined_labeled, width = 10, height = 6.5, units = "in", dpi = 300)
+
+# Save high res verison 
+ggsave(filename = "Output/Figure5_prediction_plots_1000dpi.jpeg",Fig5_combined_labeled, width = 10, height = 6.5, units = "in", dpi = 1000)
 
 
 ############################### Session info ###############################
