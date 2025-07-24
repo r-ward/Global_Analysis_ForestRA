@@ -126,9 +126,9 @@ plot_MATresponse <- function(data, y_var, y_lab, colors_MAP) {
     ) +
     theme_bw() +
     labs(
-      x = "Mean Annual Temperature (°C)",
+      x = "MAT (°C)",
       y = y_lab,
-      color = "Mean annual \nprecipitation\n(mm/yr)"
+      color = "MAP (mm/yr)"
     ) +
     theme(
       legend.position = "right",
@@ -147,7 +147,7 @@ plot_FA_responses <- function(data, y_var, y_lab, colors_age) {
     ) +
     theme_bw() +
     labs(
-      x = "Mean Annual Temperature (°C)",
+      x = "MAT (°C)",
       y = y_lab,
       color = "Forest Age"
     ) +
@@ -203,39 +203,6 @@ get_legend <- function(plot) {
 map_legend <- get_legend(RRL_plot)
 fa_legend <- get_legend(RRL_FA_plot)
 
-
-# Create plots without legends
-p1 <- plot_MATresponse(RRL_MAT_preds, "RRL", "RA proxy (R/(R+L))", colors_MAP) + theme(legend.position = "none")
-p2 <- plot_MATresponse(R_MAT_preds, "R", "R (Mg/hayr)", colors_MAP) + theme(legend.position = "none")
-p3 <- plot_MATresponse(L_MAT_preds, "L", "L (Mg/hayr)", colors_MAP) + theme(legend.position = "none")
-p4 <- plot_FA_responses(RRL_FA_data, "RRL", "RA proxy (R/(R+L))", colors_age ) + theme(legend.position = "none")
-p5 <- plot_FA_responses(R_FA_data, "R", "R (Mg/hayr)", colors_age) + theme(legend.position = "none")
-p6 <- plot_FA_responses(L_FA_data, "L", "L (Mg/hayr)", colors_age) + theme(legend.position = "none")
-
-# # Update individual plots to add labels
-# p1 <- p1 + ggtitle("a)") + theme(plot.title = element_text(hjust = 0, size = 12, margin = margin(b = -15)))
-# p2 <- p2 + ggtitle("b)") + theme(plot.title = element_text(hjust = 0, size = 12, margin = margin(b = -15)))
-# p3 <- p3 + ggtitle("c)") + theme(plot.title = element_text(hjust = 0, size = 12, margin = margin(b = -15)))
-# p4 <- p4 + ggtitle("d)") + theme(plot.title = element_text(hjust = 0, size = 12, margin = margin(b = -15)))
-# p5 <- p5 + ggtitle("e)") + theme(plot.title = element_text(hjust = 0, size = 12, margin = margin(b = -15)))
-# p6 <- p6 + ggtitle("f)") + theme(plot.title = element_text(hjust = 0, size = 12, margin = margin(b = -15)))
-
-# Arrange all plots
-# Fig5_combined <- grid.arrange(
-#   # First row with MAP plots and legend
-#   arrangeGrob(p1, p2, p3, map_legend,
-#               widths = c(1, 1, 1, 0.4),
-#               nrow = 1),
-#   # Second row with FA plots and legend
-#   arrangeGrob(p4, p5, p6, fa_legend,
-#               widths = c(1, 1, 1, 0.4),
-#               nrow = 1),
-#   heights = c(1, 1),
-#   nrow = 2
-# )
-# Fig5_combined
-
-# ggsave(filename = "GlobalRA_scripts/Paper_figs/Figure5_prediction_plots.jpeg",Fig5_combined, width = 10, height = 6, units = "in", dpi = 300)
 
 
 

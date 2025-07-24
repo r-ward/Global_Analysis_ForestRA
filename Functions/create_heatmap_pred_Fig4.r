@@ -95,7 +95,7 @@ create_tile_plot <- function(data, z_var, z_label) {
     geom_tile(aes(fill = .data[[z_var]]), alpha = 0.9) +
     geom_contour(linetype = "dashed", color = "grey32") +
     scale_fill_viridis_c() +
-    labs(x = "MAT", y = "MAP", fill = z_label) +
+    labs(x = "MAT (°C)", y = "MAP (mm/yr)", fill = z_label) +
     theme_minimal() +
     theme(
       text = element_text(size = 22),
@@ -147,7 +147,7 @@ get_convex_hull_heatmap <- function(tile_data, hull_points, z_var, z_label, z_ti
         geom_contour(data = grid, aes(x = MAT_unsc, y = MAP_unsc, z = !!sym(z_var)), color = "black") +
         geom_point(data = df_points, 
                             aes(x = MAT_unsc, y = MAP_unsc, size = Sampling_duration), color = "black", shape = 21, fill = "#ebe7eb", alpha = .6) +
-        labs(title = paste(z_title), x = "MAT", y = "MAP", fill = z_label, size = "Sampling\n duration") +
+        labs(title = paste(z_title), x = "MAT (°C)", y = "MAP (mm/yr)", fill = z_label, size = "Sampling\n duration") +
         theme_bw() + 
         theme(
           # legend.position = "bottom"

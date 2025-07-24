@@ -62,11 +62,11 @@ plot_EF_fig <- function(mod_est_data, response_var, xlims, order, red_color, blu
         theme_bw() +
         # Increase axis text size
         theme(
-            title = element_text(size = 22),
-            axis.title.x = element_text(size = 20),
-            axis.text.x = element_text(size = 20),
-            axis.title.y = element_text(size = 20),
-            axis.text.y = element_text(size = 20)
+            title = element_text(size = 18),
+            axis.title.x = element_text(size = 18),
+            axis.text.x = element_text(size = 18),
+            axis.title.y = element_text(size = 18),
+            axis.text.y = element_text(size = 18)
             ) +
         labs(y = "Predictor", 
              x = "Coefficient estimate", 
