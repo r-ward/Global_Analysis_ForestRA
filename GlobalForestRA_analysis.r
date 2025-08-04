@@ -157,11 +157,11 @@ final_plot <- plot_layout +
         plot.tag = element_text(hjust = 0, vjust = 1))  # Align tags
 
 # Save the plot
-ggsave(filename = "Output/Figure1_NPPcorr_and_maps.jpeg", plot = final_plot, 
-       width = 12, height = 9, units = "in", dpi = 300)
+# ggsave(filename = "Output/Figure1_NPPcorr_and_maps.jpeg", plot = final_plot, 
+#        width = 12, height = 9, units = "in", dpi = 300)
 # Save as pdf for final submission
-ggsave(filename = "Output/Figure1_NPPcorr_and_maps_800dpi.jpeg", plot = final_plot, 
-       width = 12, height = 9, units = "in", dpi = 800) # 1000 dpi file was > 10MB, 800 dpi is within upload limit
+# ggsave(filename = "Output/Figure1_NPPcorr_and_maps_800dpi.jpeg", plot = final_plot, 
+#       width = 12, height = 9, units = "in", dpi = 800) # 1000 dpi file was > 10MB, 800 dpi is within upload limit
 
 
 ############################### Fig2 - biome differences ###############################
@@ -205,10 +205,10 @@ Fig2_combined <- (Fig2a_biomefig + Fig2b_pftfig + plot_layout(ncol = 2, widths =
 theme(plot.margin = margin(t = 0, r = 5, b = 0, l = 5, unit = "pt"))
 
 # Save Figure 2
-ggsave("Output/Figure2_boxplots.jpeg", Fig2_combined, width = 8, height = 8.5)  # Adjust dimensions as needed
+# ggsave("Output/Figure2_boxplots.jpeg", Fig2_combined, width = 8, height = 8.5)  # Adjust dimensions as needed
 
 # Save high res version of Figure 2
-ggsave("Output/Figure2_boxplots_1000dpi.jpeg", Fig2_combined, width = 8, height = 8.5, dpi = 1000)  # Adjust dimensions as needed
+# ggsave("Output/Figure2_boxplots_1000dpi.jpeg", Fig2_combined, width = 8, height = 8.5, dpi = 1000)  # Adjust dimensions as needed
 
 ############################### Model fitting ###############################
 d_mod <- df %>%
@@ -260,7 +260,7 @@ tab_model(mod_full_L, mod_full_L_noMAT2, mod_L)
 
 # Compare full models
 tab_model(mod_full_RRL, mod_full_R, mod_full_L,
-  dv.labels = c("R/(R+L)", "R", "L"),
+  dv.labels = c("RA proxy (R/(R+L))", "Reproductive litterfall (R)", "Leaf litterfall (L)"),
   show.aic = TRUE
 ) 
 
@@ -332,9 +332,9 @@ EF_grid <- grid.arrange(
   widths = c(1.6, 1, 1)
 )
 
-ggsave("Output/Figure3_modeffects.jpeg", EF_grid, width = 16, height = 10, units = "in", dpi = 300, bg = "white")
+# ggsave("Output/Figure3_modeffects.jpeg", EF_grid, width = 16, height = 10, units = "in", dpi = 300, bg = "white")
 
-ggsave("Output/Figure3_modeffects_1000dpi.jpeg", EF_grid, width = 16, height = 10, units = "in", dpi = 1000, bg = "white")
+# ggsave("Output/Figure3_modeffects_1000dpi.jpeg", EF_grid, width = 16, height = 10, units = "in", dpi = 1000, bg = "white")
 
 
 ############################### Fig4 - compare predictions over climate space ###############################
@@ -368,7 +368,6 @@ ggsave("Output/Figure4_heatmap.jpeg", Figure_4, width = 16, height = 6.5, units 
 # Save high res version 
 ggsave("Output/Figure4_heatmap_1000dpi.jpeg", Figure_4, width = 16, height = 6.5, units = "in", dpi = 1000, bg = "white")
 
-
 ############################### Fig5 - compare predictions over MAT ###############################
 
 source("Functions/create_prediction_plots_Fig5.r")
@@ -385,19 +384,23 @@ p6 <- plot_FA_responses(L_FA_data, "L", "L (Mg/hayr)", colors_age) + theme(legen
 plot_list <- list(p1, p2, p3, p4, p5, p6)
 
 # Add labels to each plot
-labels <- c("a) RA proxy (R/(R+L))", 
-            "b) Reproductive litterfall (R)", 
-            "c) Leaf litterfall (L)",
+labels <- c("a)",  #RA proxy (R/(R+L))", 
+            "b)", # Reproductive litterfall (R)", 
+            "c)", # Leaf litterfall (L)",
             "d)", 
             "e)",
             "f)")
 
-#hjust_vals <- c(rep(0, 3), rep(0,3))
+col_headers <- list(
+  textGrob("RA proxy (R/(R+L)", gp = gpar(fontsize = 14), x = 0.5, y = 0.5), 
+  textGrob("Reproductive litterfall (R)", gp = gpar(fontsize = 14), x = 0.5, y = 0.5), 
+  textGrob("Leaf litterfall (L)", gp = gpar(fontsize = 14), x = 0.5, y = 0.5) 
+)
 
 # Add labels to each plot
 plot_list_labeled <- lapply(seq_along(plot_list), function(i) {
   plot_list[[i]] + 
-    theme(plot.margin = unit(c(1, 0.5, 0.5, 0.5), "cm")) +  # top, right, bottom, left margins
+    theme(plot.margin = unit(c(.75, 0.5, 0.5, 0.5), "cm")) +  # top, right, bottom, left margins
     annotate("text", x = -Inf, y = Inf, 
              label = labels[i], 
             hjust = 0,# hjust_vals[i],# 1.3, 
@@ -423,6 +426,10 @@ Fig5_combined <- grid.arrange(
 
 # Arrange plots with labels 
 Fig5_combined_labeled <- grid.arrange(
+  # Col headers row
+  arrangeGrob(col_headers[[1]], col_headers[[2]], col_headers[[3]], nullGrob(),
+              widths = c(1, 1, 1, 0.4),
+              nrow = 1),
   # First row with MAP plots and legend
   arrangeGrob(plot_list_labeled[[1]], plot_list_labeled[[2]], 
               plot_list_labeled[[3]], map_legend,
@@ -433,15 +440,17 @@ Fig5_combined_labeled <- grid.arrange(
               plot_list_labeled[[6]], fa_legend,
               widths = c(1, 1, 1, 0.4),
               nrow = 1),
-  heights = c(1, 1),
-  nrow = 2
+  heights = c(0.10, 1, 1),
+  nrow = 3
 )
 
+
 # Save plot
-ggsave(filename = "Output/Figure5_prediction_plots.jpeg",Fig5_combined_labeled, width = 10, height = 6.5, units = "in", dpi = 300)
+# ggsave(filename = "Output/Figure5_prediction_plots.jpeg",Fig5_combined_labeled, width = 10, height = 6.5, units = "in", dpi = 300)
 
 # Save high res verison 
-ggsave(filename = "Output/Figure5_prediction_plots_1000dpi.jpeg",Fig5_combined_labeled, width = 10, height = 6.5, units = "in", dpi = 1000)
+# ggsave(filename = "Output/Figure5_prediction_plots_1000dpi.jpeg",Fig5_combined_labeled, width = 10, height = 6.5, units = "in", dpi = 1000)
+
 
 
 ############################### Session info ###############################
