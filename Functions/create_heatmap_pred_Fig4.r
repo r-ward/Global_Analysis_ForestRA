@@ -98,12 +98,12 @@ create_tile_plot <- function(data, z_var, z_label) {
     labs(x = "MAT (°C)", y = "MAP (mm/yr)", fill = z_label) +
     theme_minimal() +
     theme(
-      text = element_text(size = 22),
-      axis.text = element_text(size = 22),
+      text = element_text(size = 25),
+      axis.text = element_text(size = 25),
       axis.title = element_text(size = 26),
-      legend.text = element_text(size = 22),
-      legend.title = element_text(size = 22),
-      plot.title = element_text(size = 28)
+      legend.text = element_text(size = 26),
+      legend.title = element_text(size = 26),
+      plot.title = element_text(size = 30)
     ) 
 }
 
@@ -150,8 +150,11 @@ get_convex_hull_heatmap <- function(tile_data, hull_points, z_var, z_label, z_ti
         labs(title = paste(z_title), x = "MAT (°C)", y = "MAP (mm/yr)", fill = z_label, size = "Sampling\n duration") +
         theme_bw() + 
         theme(
-          # legend.position = "bottom"
-            axis.title = element_text(size = 14)
+            axis.text = element_text(size = 12),
+            axis.title = element_text(size = 14),
+            legend.text = element_text(size = 12),
+            legend.title = element_text(size = 14),
+            plot.title = element_text(size = 20)
           ) +
         guides(fill = guide_colorbar(order = 1)) #+
        # theme_bw() 
