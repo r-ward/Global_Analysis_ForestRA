@@ -14,9 +14,15 @@ library(cowplot)
 # Crop Fig1c, we're short on space
 Fig1c_cropped <- Fig1c + xlim(-170, 170)
 
-# Edit ylab (in text ylab of these figures is R/(R+L))
-p1_edited <- p1 + ylab("RA proxy (R/(R+L))") 
-p4_edited <- p4 + ylab("RA proxy (R/(R+L))") 
+# Remove ylab, use title instead
+p1_edited <- p1 + 
+  ylab("") + 
+  ggtitle("Forest Reproductive Allocation") +
+  theme(plot.title = element_text(hjust = 0.5,        # Center the title
+                                  size = 12,          # Adjust size
+                                  margin = margin(b = 18, t = 10)))  # Add space below title
+p4_edited <- p4 + ylab("") 
+
 
 # Get p1, p4 legends and reduce text size
 map_legend <- get_legend(RRL_plot + theme(legend.title = element_text(size = 10), 
@@ -28,13 +34,13 @@ fa_legend <- get_legend(RRL_FA_plot + theme(legend.title = element_text(size = 1
 p1_margins <- p1_edited + theme(
   panel.grid.major = element_line(color = "grey90", size = 0.5), # Add grid lines
   panel.grid.minor = element_line(color = "grey95", size = 0.25),
-  plot.margin = margin(t = 30, r = 2, b = 5, l = 5, unit = "pt")  # Large top margin
+  plot.margin = margin(t = 15, r = 2, b = 5, l = 5, unit = "pt")  # Large top margin
 ) 
 
 p4_margins <- p4_edited + theme(
   panel.grid.major = element_line(color = "grey90", size = 0.5), # Add grid lines
   panel.grid.minor = element_line(color = "grey95", size = 0.25),
-  plot.margin = margin(t = 5, r = 2, b = 30, l = 5, unit = "pt")  # Large bottom margin
+  plot.margin = margin(t = 15, r = 2, b = 40, l = 5, unit = "pt")  # Large bottom margin
 ) 
 
 # Fine-tune MAP legend position, why are these so wonky??
@@ -63,7 +69,7 @@ graphical_abstract <- grid.arrange(
 # Increase width to 12.7 so that legend text is not cut off on the right side
 # After much unsuccessful fiddling, it seems like this is the easiest way
 ggsave(filename = "Output/GraphicalAbstract_1000dpi.jpeg",
-       graphical_abstract, width = 12.7, height = 5, units = "in", dpi = 1000) 
+       graphical_abstract, width = 12.7, height = 5.5, units = "in", dpi = 1000) 
 
 
 
