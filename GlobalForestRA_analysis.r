@@ -329,9 +329,12 @@ EF_grid <- grid.arrange(
     scale_x_continuous(breaks = seq(-1, 1, 0.5)),
   
   ncol = 3,
-  widths = c(1.6, 1, 1)
+  widths = c(1.4, 1, 1) # c(1.6, 1, 1) 
 )
 
+# TESTING
+
+ggsave("Output/Figure3_modeffects_1000dpi_v2.jpeg", EF_grid, width = 16, height = 10, units = "in", dpi = 1000, bg = "white")
 # ggsave("Output/Figure3_modeffects.jpeg", EF_grid, width = 16, height = 10, units = "in", dpi = 300, bg = "white")
 
 # ggsave("Output/Figure3_modeffects_1000dpi.jpeg", EF_grid, width = 16, height = 10, units = "in", dpi = 1000, bg = "white")
